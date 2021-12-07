@@ -1,22 +1,29 @@
 #pragma once
 
 #include "RenderIface.h"
+#include <string>
+
+static const std::string PPM_FORMAT_P3 = "P3";
 
 class PPMRenderConfig : public RenderConfigIface
 {
-    
+public:
+    void setPixelFormat(std::string _format) { m_pixelFormat = _format; }
+    std::string getPixelFormat() { return m_pixelFormat; }
+
+private:
+    std::string m_pixelFormat;
 };
 
 class PPMFormatRender: public RenderIface
 {
 public:
     void render();
-    void setImageDim(uint64_t _width, uint64_t _height);
     void configRender(RenderConfigIface& _config);
 
     void setPixel(uint64_t _row, uint64_t _col, vec3& vec3);
-    void setPixelRow(uint64_t _row, vector<vec3>& _data);
-    void setPixelCol(uint64_t _col, vector<vec3>& _data);
+    void setPixelRow(uint64_t _row, std::vector<vec3>& _data);
+    void setPixelCol(uint64_t _col, std::vector<vec3>& _data);
     void setImage(std::vector<std::vector<vec3>>& _data);
  
 private:

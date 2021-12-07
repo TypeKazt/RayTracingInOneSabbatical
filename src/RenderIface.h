@@ -9,7 +9,7 @@
 class RenderConfigIface
 {
 public:
-    setImageDim(uint64_t _width, uint64_t _height) { m_imageWidth = _width; m_imageHeight = _height; }
+    void setImageDim(uint64_t _width, uint64_t _height) { m_imageWidth = _width; m_imageHeight = _height; }
     uint64_t getImageWidth() { return m_imageWidth; }
     uint64_t getImageHeight() { return m_imageHeight; }
 
