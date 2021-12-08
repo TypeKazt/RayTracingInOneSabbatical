@@ -19,7 +19,7 @@ class PPMFormatRender: public RenderIface
 {
 public:
     void render();
-    void configRender(RenderConfigIface& _config);
+    void configRender(PPMRenderConfig& _config);
 
     void setPixel(uint64_t _row, uint64_t _col, vec3& vec3);
     void setPixelRow(uint64_t _row, std::vector<vec3>& _data);
