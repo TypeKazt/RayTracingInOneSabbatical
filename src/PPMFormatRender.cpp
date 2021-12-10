@@ -21,7 +21,11 @@ void PPMFormatRender::render()
 void PPMFormatRender::configRender(PPMRenderConfig& _config)
 {
 	m_config = _config;
-	m_image.reserve(m_config.getImageWidth());
+	m_image.resize(m_config.getImageWidth());
+	for (auto i : m_image)
+	{
+		i.resize(m_config.getImageHeight());
+	}
 }
 
 void PPMFormatRender::setPixel(uint64_t _row, uint64_t _col, vec3& vec3)
