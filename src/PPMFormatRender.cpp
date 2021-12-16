@@ -22,9 +22,10 @@ void PPMFormatRender::configRender(PPMRenderConfig& _config)
 {
 	m_config = _config;
 	m_image.resize(m_config.getImageWidth());
-	for (auto i : m_image)
+	for (auto &i : m_image)
 	{
-		i.resize(m_config.getImageHeight());
+		//i.resize(m_config.getImageHeight());
+		i.resize(256);
 	}
 }
 
