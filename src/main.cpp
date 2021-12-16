@@ -17,7 +17,7 @@ int main()
 	{
 		for (int j = 0; j < imageHeight; ++j)
 		{
-			vec3 pixel(imageWidth - i, imageHeight - j, 100);
+			color pixel(imageWidth - i, imageHeight - j, 100);
 			ppm.setPixel(j, i, pixel);
 		}
 	}

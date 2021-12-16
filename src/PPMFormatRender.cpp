@@ -10,9 +10,9 @@ void PPMFormatRender::render()
 	{
 		for (auto iCol = iRow->begin(); iCol != iRow->end(); ++iCol)
 		{
-			std::cout << static_cast<uint8_t>(iCol->x()) << " "
-				<< static_cast<uint8_t>(iCol->y()) << " "
-				<< static_cast<uint8_t>(iCol->z()) << "    ";
+			std::cout << static_cast<int>(iCol->x()) << " "
+				<< static_cast<int>(iCol->y()) << " "
+				<< static_cast<int>(iCol->z()) << "    ";
 		}
 		std::cout << std::endl;
 	}
@@ -22,14 +22,14 @@ void PPMFormatRender::configRender(PPMRenderConfig& _config)
 {
 	m_config = _config;
 	m_image.resize(m_config.getImageWidth());
-	for (auto &i : m_image)
+	uint64_t imageHeight = m_config.getImageHeight();
+	for (auto i = m_image.begin(); i != m_image.end(); ++i)
 	{
-		//i.resize(m_config.getImageHeight());
-		i.resize(256);
+		i->resize(imageHeight);
 	}
 }
 
-void PPMFormatRender::setPixel(uint64_t _row, uint64_t _col, vec3& vec3)
+void PPMFormatRender::setPixel(uint64_t _row, uint64_t _col, color& vec3)
 {
 	m_image[_row][_col] = vec3;
 }
