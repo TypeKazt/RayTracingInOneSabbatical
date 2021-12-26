@@ -5,17 +5,17 @@
 #define CLAMP(X,Y) X > Y ? Y : X
 
 double hit_sphere(const point3& center, double radius, const ray& r) {
-// 𝑡2𝐛⋅𝐛+2𝑡𝐛⋅(𝐀−𝐂)+(𝐀−𝐂)⋅(𝐀−𝐂)−𝑟2=0
     vec3 oc = r.origin() - center;
-    auto a = dot(r.direction(), r.direction());
-    auto b = 2.0 * dot(oc, r.direction());
-    auto c = dot(oc, oc) - radius*radius;
-    auto discriminant = b*b - 4*a*c;
-	if(discriminant < 0)
-	{
-		return -1.0;
-	}
-	return (-b - sqrt(discriminant)) / (2.0*a);
+    auto a = r.direction().length_squared();
+    auto half_b = dot(oc, r.direction());
+    auto c = oc.length_squared() - radius*radius;
+    auto discriminant = half_b*half_b - a*c;
+
+    if (discriminant < 0) {
+        return -1.0;
+    } else {
+        return (-half_b - sqrt(discriminant) ) / a;
+    }
 }
 
 color ray_color(const ray& r) {
@@ -24,7 +24,8 @@ color ray_color(const ray& r) {
 	if(t > 0.0)
 	{
 		auto N = unit_vector(r.at(t) - sphereC);
-		return ((N+vec3(1,1,1))*0.5)*255.99;
+		//return ((N+vec3(1,1,1))*0.5)*255.99;
+        return (0.5*color(N.x()+1, N.y()+1, N.z()+1))*255.99;
 	}
     vec3 unit_direction = unit_vector(r.direction());
     t = 0.5*(unit_direction.y() + 1.0);
