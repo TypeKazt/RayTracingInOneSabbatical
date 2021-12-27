@@ -2,9 +2,8 @@
 
 #include "hittable_list.h"
 #include "sphere.h"
+#include "camera.h"
 #include "PPMFormatRender.h"
-
-#define CLAMP(X,Y) X > Y ? Y : X
 
 color ray_color(const ray& r, const hittable& world) {
 	hit_record rec;
@@ -34,17 +33,9 @@ int main()
 
     // Camera
 
-    auto viewport_height = 2.0;
-    auto viewport_width = aspect_ratio * viewport_height;
-    auto focal_length = 1.0;
+	camera cam;
 
-    auto origin = point3(0, 0, 0);
-    auto horizontal = vec3(viewport_width, 0, 0);
-    auto vertical = vec3(0, viewport_height, 0);
-    auto lower_left_corner = origin - horizontal/2 - vertical/2 - vec3(0, 0, focal_length);
-
-
-
+	// Render interface
 	PPMRenderConfig config;
 	config.setImageDim(image_width, image_height);
 	config.setPixelFormat(PPM_FORMAT_P3);
@@ -56,12 +47,15 @@ int main()
 	{
 		for (int i = 0; i < image_width; ++i)
 		{
-			//color pixel_color((static_cast<double>(j)/image_height)*155.0, (static_cast<double>(i)/image_width)*155.0, 1);
-            auto u = double(i) / (image_width-1);
-            auto v = double(j) / (image_height-1);
-            ray r(origin, lower_left_corner + u*horizontal + v*vertical - origin);
-            color pixel_color = ray_color(r, world);
-			ppm.setPixel((image_height-1)-j, i, pixel_color);
+			for(int superSamp = 0; superSamp < 100; ++superSamp)
+			{
+				auto u = (double(i)+random_double()) / (image_width-1);
+				auto v = (double(j)+random_double()) / (image_height-1);
+				//ray r(origin, lower_left_corner + u*horizontal + v*vertical - origin);
+				ray r = cam.get_ray(u, v);
+				color pixel_color = ray_color(r, world);
+				ppm.sumPixel((image_height-1)-j, i, pixel_color, 100);
+			}
 		}
 	}
 	ppm.render();

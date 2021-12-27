@@ -1,4 +1,5 @@
 #include "PPMFormatRender.h"
+#include "rtsabbatical.h"
 #include <iostream>
 
 void PPMFormatRender::render()
@@ -29,9 +30,19 @@ void PPMFormatRender::configRender(PPMRenderConfig& _config)
 	}
 }
 
-void PPMFormatRender::setPixel(uint64_t _row, uint64_t _col, color& vec3)
+void PPMFormatRender::setPixel(uint64_t _row, uint64_t _col, color& _color)
 {
-	m_image[_row][_col] = vec3;
+	m_image[_row][_col] = _color;
+}
+
+void PPMFormatRender::sumPixel(uint64_t _row, uint64_t _col, color& _color, int samples)
+{
+	auto colorScale = 1.0 / samples;
+	color summed = m_image[_row][_col] + _color*colorScale;
+	auto r = clamp(summed.x(), 0, 255.99);
+	auto g = clamp(summed.y(), 0, 255.99);
+	auto b = clamp(summed.z(), 0, 255.99);
+	m_image[_row][_col] = vec3(r, g, b);
 }
 
 void PPMFormatRender::setPixelRow(uint64_t _row, std::vector<vec3>& _data)
