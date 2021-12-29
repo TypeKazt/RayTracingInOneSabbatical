@@ -12,9 +12,9 @@ void PPMFormatRender::render()
 	{
 		for (auto iCol = iRow->begin(); iCol != iRow->end(); ++iCol)
 		{
-			std::cout << static_cast<int>(iCol->x()) << " "
-				<< static_cast<int>(iCol->y()) << " "
-				<< static_cast<int>(iCol->z()) << "\n";
+			std::cout << static_cast<int>(iCol->x()*255.99) << " "
+				<< static_cast<int>(iCol->y()*255.99) << " "
+				<< static_cast<int>(iCol->z()*255.99) << "\n";
 		}
 	}
 }
@@ -35,13 +35,18 @@ void PPMFormatRender::setPixel(uint64_t _row, uint64_t _col, color& _color)
 	m_image[_row][_col] = _color;
 }
 
-void PPMFormatRender::sumPixel(uint64_t _row, uint64_t _col, color& _color, int samples)
+void PPMFormatRender::sumPixel(uint64_t _row, uint64_t _col, color& _color)
+{
+		m_image[_row][_col] += _color;
+}
+
+void PPMFormatRender::avgPixel(uint64_t _row, uint64_t _col, int samples)
 {
 	auto colorScale = 1.0 / samples;
-	color summed = m_image[_row][_col] + _color*colorScale;
-	auto r = clamp(summed.x(), 0, 255.99);
-	auto g = clamp(summed.y(), 0, 255.99);
-	auto b = clamp(summed.z(), 0, 255.99);
+	auto summed = m_image[_row][_col]*colorScale;
+	auto r = sqrt(summed.x());
+	auto g = sqrt(summed.y());
+	auto b = sqrt(summed.z());
 	m_image[_row][_col] = vec3(r, g, b);
 }
 

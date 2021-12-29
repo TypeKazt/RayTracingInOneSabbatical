@@ -25,7 +25,8 @@ public:
     void configRender(RenderConfigIface& _config);
 
     void setPixel(uint64_t _row, uint64_t _col, color& vec3);
-    void sumPixel(uint64_t _row, uint64_t _col, color& vec3, int samples);
+    void sumPixel(uint64_t _row, uint64_t _col, color& vec3);
+    void avgPixel(uint64_t _row, uint64_t _col, int samples);
     void setPixelRow(uint64_t _row, std::vector<vec3>& _data);
     void setPixelCol(uint64_t _col, std::vector<vec3>& _data);
     void setImage(std::vector<std::vector<vec3> >& _data);
