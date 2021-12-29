@@ -80,6 +80,12 @@ public:
     	return unit_vector(vec3::random_in_unit_sphere());
 	}
 
+ 	bool near_zero() const {
+        // Return true if the vector is close to zero in all dimensions.
+        const auto s = 1e-8;
+        return (fabs(e[0]) < s) && (fabs(e[1]) < s) && (fabs(e[2]) < s);
+    }
+
 public:
     double e[3];
 };
@@ -127,6 +133,10 @@ inline vec3 cross(const vec3 &u, const vec3 &v) {
 
 inline vec3 unit_vector(vec3 v) {
     return v / v.length();
+}
+
+vec3 reflect(const vec3& v, const vec3& n) {
+    return v - 2*dot(v,n)*n;
 }
 // Type aliases for vec3
 using point3 = vec3;   // 3D point

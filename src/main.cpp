@@ -1,6 +1,7 @@
 #include "rtsabbatical.h"
 
 #include "hittable_list.h"
+#include "material.h"
 #include "sphere.h"
 #include "camera.h"
 #include "PPMFormatRender.h"
@@ -18,18 +19,29 @@ color ray_grad(const ray&r)
 color ray_color(const ray& r, const hittable& world, int depth=50) {
 	hit_record rec;
 	ray nextRay = r;
-	color result;
+	color result(1,1,1);
 	auto decimatedScale = 1.0;
 	while(world.hit(nextRay, 0.001, infinity, rec) && depth > 0)
 	{
-		point3 target = rec.p + rec.normal + vec3::random_unit_vector();
-		nextRay = ray(rec.p, target-rec.p);
-		decimatedScale *= 0.5;
+		//point3 target = rec.p + rec.normal + vec3::random_unit_vector();
+		//nextRay = ray(rec.p, target-rec.p);
+		color attenuation;
+		if(rec.mat_ptr->scatter(nextRay, rec, attenuation, nextRay))
+		{
+			result = result*attenuation;	
+		}
+		else
+		{
+			result *= 0;
+			break;
+		}
+		//decimatedScale *= 0.5;
 		depth--;
 	}
 	if(depth != 0)
 	{
-		result = ray_grad(nextRay) * decimatedScale;
+		//result = ray_grad(nextRay) * decimatedScale;
+		result = ray_grad(nextRay)*result;
 	}
 	return result;
 }
@@ -42,8 +54,11 @@ color ray_color(const ray& r, const hittable& world, int depth) {
         return color(0,0,0);
 
     if (world.hit(r, 0.001, infinity, rec)) {
-        point3 target = rec.p + rec.normal + vec3::random_in_unit_sphere();
-        return 0.5 * ray_color(ray(rec.p, target - rec.p), world, depth-1);
+        ray scattered;
+        color attenuation;
+        if (rec.mat_ptr->scatter(r, rec, attenuation, scattered))
+            return attenuation * ray_color(scattered, world, depth-1);
+        return color(0,0,0);
     }
 
     vec3 unit_direction = unit_vector(r.direction());
@@ -61,10 +76,13 @@ int main()
 	const auto NUM_SUP_SAMP = 100;
 	const auto max_depth = 50;
 
+	// Materials
+	auto lambertian_mat = shared_ptr<lambertian>(new lambertian(color(0,0,0)));
+
 	// World
 	hittable_list world;
-	world.add(shared_ptr<sphere>(new sphere(point3(0,0,-1), 0.5)));
-	world.add(shared_ptr<sphere>(new sphere(point3(0,-100.5,-1), 100)));
+	world.add(shared_ptr<sphere>(new sphere(point3(0,0,-1), 0.5, lambertian_mat)));
+	world.add(shared_ptr<sphere>(new sphere(point3(0,-100.5,-1), 100, lambertian_mat)));
 
     // Camera
 
