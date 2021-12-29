@@ -4,4 +4,4 @@ My December 2021 implementation of the famous crash course ["Ray Tracing in One 
 During the time of December 2021, I took a month break between jobs. During that time, one of the projects that consumed my time was this course.
 
 # Example image
-![It's SPHERICAL](./images/example.ppm)
+![It's SPHERICAL](./images/example.png)
