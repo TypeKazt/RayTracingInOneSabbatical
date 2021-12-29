@@ -5,10 +5,10 @@ cmake_minimum_required (VERSION 3.8)
 project(RayTracing)
 
 # Add source to this project's executable.
-add_library(PPMLib ./src/PPMFormatRender.cpp ./src/PPMFormatRender.h)
+#add_library(PPMLib ./src/PPMFormatRender.cpp ./src/PPMFormatRender.h)
 include_directories("./src")
 
 add_executable (RayTracingInOneSabbatical ./src/main.cpp)
-target_link_libraries(RayTracingInOneSabbatical PPMLib)
+#target_link_libraries(RayTracingInOneSabbatical PPMLib)
 
 # TODO: Add tests and install targets if needed.

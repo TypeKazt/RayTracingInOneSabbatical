@@ -1,6 +1,7 @@
 # Prerequisites
 *.d
 *.swp
+test.ppm
 
 # Compiled Object files
 *.slo

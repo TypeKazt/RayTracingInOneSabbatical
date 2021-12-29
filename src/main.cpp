@@ -77,12 +77,17 @@ int main()
 	const auto max_depth = 50;
 
 	// Materials
-	auto lambertian_mat = shared_ptr<lambertian>(new lambertian(color(0,0,0)));
+	auto mat_ball = shared_ptr<lambertian>(new lambertian(color(0.7,0.1,0.3)));
+	auto mat_ground = shared_ptr<lambertian>(new lambertian(color(0.8,0.8,0.0)));
+    auto mat_left   = shared_ptr<metal>(new metal(color(0.8, 0.8, 0.8)));
+    auto mat_right  = shared_ptr<metal>(new metal(color(0.8, 0.6, 0.2)));
 
 	// World
 	hittable_list world;
-	world.add(shared_ptr<sphere>(new sphere(point3(0,0,-1), 0.5, lambertian_mat)));
-	world.add(shared_ptr<sphere>(new sphere(point3(0,-100.5,-1), 100, lambertian_mat)));
+	world.add(shared_ptr<sphere>(new sphere(point3(0,0,-1), 0.5, mat_ball)));
+	world.add(shared_ptr<sphere>(new sphere(point3(-1,0,-1), 0.5, mat_left)));
+	world.add(shared_ptr<sphere>(new sphere(point3(1,0,-1), 0.5, mat_right)));
+	world.add(shared_ptr<sphere>(new sphere(point3(0,-100.5,-1), 100, mat_ground)));
 
     // Camera
 
