@@ -79,8 +79,8 @@ int main()
 	// Materials
 	auto mat_ball = shared_ptr<lambertian>(new lambertian(color(0.7,0.1,0.3)));
 	auto mat_ground = shared_ptr<lambertian>(new lambertian(color(0.8,0.8,0.0)));
-    auto mat_left   = shared_ptr<metal>(new metal(color(0.8, 0.8, 0.8)));
-    auto mat_right  = shared_ptr<metal>(new metal(color(0.8, 0.6, 0.2)));
+    auto mat_left   = shared_ptr<metal>(new metal(color(0.8, 0.8, 0.8), 0.3));
+    auto mat_right  = shared_ptr<metal>(new metal(color(0.8, 0.6, 0.2), 1.0));
 
 	// World
 	hittable_list world;
